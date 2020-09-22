@@ -2,6 +2,7 @@ use frame_support::{
     dispatch::{result::Result, DispatchError, DispatchResult},
     traits::Get,
 };
+use sp_std::vec::Vec;
 
 /// A type implementing this trait stores all information of an NFT.
 pub trait Nft {
@@ -17,8 +18,6 @@ pub trait Nft {
 /// - transferable
 /// - possible to reason about the cardinality of sets of this type
 pub trait Unique {
-// TODO: Is this reasonable bcs it will be placed as a macro in a file with a Trait declaration?
-//pub trait Unique<T: Trait> {
     /// A struct that implements the Nft trait.
     type Asset: Nft;
     /// The type used to identify asset owners.
