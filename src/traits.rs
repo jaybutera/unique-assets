@@ -23,11 +23,6 @@ pub trait Unique {
     /// The type used to identify asset owners.
     type AccountId;
 
-    // TODO: Should not be part of unique assets, make a Cappable trait
-    type AssetLimit: Get<u128>;
-    type UserAssetLimit: Get<u64>;
-
-
     /// The total number of this type of asset that exists (minted - burned).
     fn total() -> u128;
     /// The total number of this type of asset owned by an account.
@@ -72,4 +67,16 @@ pub trait Burnable {
     fn burn(asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
     /// The total number of this type of asset that has been burned (may overflow).
     fn burned() -> u128;
+}
+
+/// An instance of a Cappable type has a limit on the maximum amount of assets
+/// allowed per user and in total.
+pub trait Cappable {
+    /// A struct that implements the Nft trait.
+    type Asset: Nft;
+
+    /// Total number of assets allowed to exist.
+    type AssetLimit: Get<u128>;
+    /// Maximum number of assets a single user is allowed to own.
+    type UserAssetLimit: Get<u64>;
 }
