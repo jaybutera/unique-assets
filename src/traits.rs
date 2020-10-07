@@ -10,6 +10,9 @@ pub trait Nft {
     type Id;
     /// The attributes that distinguish unique assets.
     type Info;
+    /// A registry unique identifier.
+    #[cfg(feature = "explicit-registries")]
+    type RegistryId;
 }
 
 /// A type implementing Unique is thought of as unique in the non-fungible sense.
@@ -30,12 +33,21 @@ pub trait Unique {
     /// The set of unique assets owned by an account.
     fn assets_for_account(account: &Self::AccountId) -> Vec<Self::Asset>;
     /// The ID of the account that owns an asset.
+    #[cfg(feature = "explicit-registries")]
+    fn owner_of(registry_id: &<Self::Asset as Nft>::RegistryId,
+                asset_id: &<Self::Asset as Nft>::Id) -> Self::AccountId;
+    #[cfg(not(feature = "explicit-registries"))]
     fn owner_of(asset_id: &<Self::Asset as Nft>::Id) -> Self::AccountId;
 
     /// Transfer ownership of an asset to another account.
     /// This method **must** return an error in the following cases:
     /// - The asset with the specified ID does not exist.
     /// - The destination account has already reached the user asset limit.
+    #[cfg(feature = "explicit-registries")]
+    fn transfer(dest_account: &Self::AccountId,
+                registry_id: &<Self::Asset as Nft>::RegistryId,
+                asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
+    #[cfg(not(feature = "explicit-registries"))]
     fn transfer(dest_account: &Self::AccountId, asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
 }
 
@@ -64,6 +76,10 @@ pub trait Burnable {
     /// Destroy an asset.
     /// This method **must** return an error in the following case:
     /// - The asset with the specified ID does not exist.
+    #[cfg(feature = "explicit-registries")]
+    fn burn(registry_id: &<Self::Asset as Nft>::RegistryId,
+            asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
+    #[cfg(not(feature = "explicit-registries"))]
     fn burn(asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
     /// The total number of this type of asset that has been burned (may overflow).
     fn burned() -> u128;
@@ -75,8 +91,10 @@ pub trait Cappable {
     /// A struct that implements the Nft trait.
     type Asset: Nft;
 
-    /// Total number of assets allowed to exist.
+    /// Total number of assets allowed to exist. An implementor *MUST* check that
+    /// the total does not exceed the limit.
     type AssetLimit: Get<u128>;
-    /// Maximum number of assets a single user is allowed to own.
+    /// Maximum number of assets a single user is allowed to own. An implementor
+    /// *MUST* check that the total does not exceed the limit.
     type UserAssetLimit: Get<u64>;
 }
