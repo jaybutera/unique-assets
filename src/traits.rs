@@ -26,12 +26,6 @@ pub trait Unique {
     /// The type used to identify asset owners.
     type AccountId;
 
-    /// The total number of this type of asset that exists (minted - burned).
-    fn total() -> u128;
-    /// The total number of this type of asset owned by an account.
-    fn total_for_account(account: &Self::AccountId) -> u64;
-    /// The set of unique assets owned by an account.
-    fn assets_for_account(account: &Self::AccountId) -> Vec<Self::Asset>;
     /// The ID of the account that owns an asset.
     #[cfg(feature = "explicit-registries")]
     fn owner_of(registry_id: &<Self::Asset as Nft>::RegistryId,
@@ -90,7 +84,12 @@ pub trait Burnable {
 pub trait Cappable {
     /// A struct that implements the Nft trait.
     type Asset: Nft;
+    type AccountId;
 
+    /// The total number of this type of asset that exists (minted - burned).
+    fn total() -> u128;
+    /// The total number of this type of asset owned by an account.
+    fn total_for_account(account: &Self::AccountId) -> u64;
     /// Total number of assets allowed to exist. An implementor *MUST* check that
     /// the total does not exceed the limit.
     type AssetLimit: Get<u128>;
