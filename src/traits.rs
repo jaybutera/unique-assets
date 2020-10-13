@@ -60,7 +60,7 @@ pub trait Mintable {
     /// - The asset, as identified by the asset info, already exists.
     /// - The specified owner account has already reached the user asset limit.
     /// - The total asset limit has already been reached.
-    fn mint(caller: Self::AccountId,
+    fn mint(caller: &Self::AccountId,
             owner: &Self::AccountId,
             asset_info: <Self::Asset as Nft>::Info,
     ) -> Result<<Self::Asset as Nft>::Id, DispatchError>;
