@@ -62,8 +62,9 @@ pub trait Mintable {
     /// - The total asset limit has already been reached.
     fn mint(caller: &Self::AccountId,
             owner: &Self::AccountId,
+            asset_id: &<Self::Asset as Nft>::Id,
             asset_info: <Self::Asset as Nft>::Info,
-    ) -> Result<<Self::Asset as Nft>::Id, DispatchError>;
+    ) -> Result<(), DispatchError>;
 }
 
 /// An instance of a Burnable type can be destroyed.
