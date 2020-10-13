@@ -38,11 +38,14 @@ pub trait Unique {
     /// - The asset with the specified ID does not exist.
     /// - The destination account has already reached the user asset limit.
     #[cfg(feature = "explicit-registries")]
-    fn transfer(dest_account: &Self::AccountId,
+    fn transfer(caller: &Self::AccountId,
+                dest_account: &Self::AccountId,
                 registry_id: &<Self::Asset as Nft>::RegistryId,
                 asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
     #[cfg(not(feature = "explicit-registries"))]
-    fn transfer(dest_account: &Self::AccountId, asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
+    fn transfer(caller: &Self::AccountId,
+                dest_account: &Self::AccountId,
+                asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
 }
 
 /// A Mintable type is capable of being instantiated.
@@ -57,7 +60,8 @@ pub trait Mintable {
     /// - The asset, as identified by the asset info, already exists.
     /// - The specified owner account has already reached the user asset limit.
     /// - The total asset limit has already been reached.
-    fn mint(owner: &Self::AccountId,
+    fn mint(caller: Self::AccountId,
+            owner: &Self::AccountId,
             asset_info: <Self::Asset as Nft>::Info,
     ) -> Result<<Self::Asset as Nft>::Id, DispatchError>;
 }
@@ -66,15 +70,18 @@ pub trait Mintable {
 pub trait Burnable {
     /// A struct that implements the Nft trait.
     type Asset: Nft;
+    /// The type used to identify asset owners.
+    type AccountId;
 
     /// Destroy an asset.
     /// This method **must** return an error in the following case:
     /// - The asset with the specified ID does not exist.
     #[cfg(feature = "explicit-registries")]
-    fn burn(registry_id: &<Self::Asset as Nft>::RegistryId,
+    fn burn(caller: Self::AccountId,
+            registry_id: &<Self::Asset as Nft>::RegistryId,
             asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
     #[cfg(not(feature = "explicit-registries"))]
-    fn burn(asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
+    fn burn(caller: Self::AccountId, asset_id: &<Self::Asset as Nft>::Id) -> DispatchResult;
     /// The total number of this type of asset that has been burned (may overflow).
     fn burned() -> u128;
 }
