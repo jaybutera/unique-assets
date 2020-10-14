@@ -1,5 +1,5 @@
-## Unique Assets
-#### Modular trait definitions for Non-Fungible Tokens
+# Unique Assets
+Modular trait definitions for Non-Fungible Tokens
 
 ---
 This library defines a set of traits which can be used in defining properties
