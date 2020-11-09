@@ -8,14 +8,14 @@ edition = "2018"
 default-features = false
 #git = 'https://github.com/paritytech/substrate.git'
 git = 'https://github.com/centrifuge/substrate.git'
-rev = '7f5382862e1f47875f05a5e7ad6219d694ffbc69'
+rev = 'be8bb186d87b9d2b47a2907c9b51ae1e252362c3'
 version = '2.0.0-rc6'
 
 [dependencies.sp-std]
 default-features = false
 #git = 'https://github.com/paritytech/substrate.git'
 git = 'https://github.com/centrifuge/substrate.git'
-rev = '7f5382862e1f47875f05a5e7ad6219d694ffbc69'
+rev = 'be8bb186d87b9d2b47a2907c9b51ae1e252362c3'
 version = '2.0.0-rc6'
 
 [features]
