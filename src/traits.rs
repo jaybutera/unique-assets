@@ -24,7 +24,7 @@ pub trait Unique {
     type AccountId;
 
     /// The ID of the account that owns an asset.
-    fn owner_of(asset_id: &<Self::Asset as Nft>::Id) -> Self::AccountId;
+    fn owner_of(asset_id: &<Self::Asset as Nft>::Id) -> Option<Self::AccountId>;
 
     /// Transfer ownership of an asset to another account.
     /// This method **must** return an error in the following cases:
