@@ -4,19 +4,9 @@ version = "0.1.0"
 authors = ["Jay Butera <buterajay@protonmail.com>"]
 edition = "2018"
 
-[dependencies.frame-support]
-default-features = false
-#git = 'https://github.com/paritytech/substrate.git'
-git = 'https://github.com/centrifuge/substrate.git'
-rev = 'be8bb186d87b9d2b47a2907c9b51ae1e252362c3'
-version = '2.0.0-rc6'
-
-[dependencies.sp-std]
-default-features = false
-#git = 'https://github.com/paritytech/substrate.git'
-git = 'https://github.com/centrifuge/substrate.git'
-rev = 'be8bb186d87b9d2b47a2907c9b51ae1e252362c3'
-version = '2.0.0-rc6'
+[dependencies]
+frame-support = { branch = "rococo-v1", default-features = false, git = "https://github.com/paritytech/substrate.git" }
+sp-std = { branch = "rococo-v1", default-features = false, git = "https://github.com/paritytech/substrate.git" }
 
 [features]
 default = [ "std" ]
