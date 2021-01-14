@@ -2,7 +2,6 @@ use frame_support::{
     dispatch::{result::Result, DispatchError, DispatchResult},
     traits::Get,
 };
-use sp_std::vec::Vec;
 
 /// A type implementing this trait stores all information of an NFT.
 pub trait Nft {
